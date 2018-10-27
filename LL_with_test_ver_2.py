@@ -1,6 +1,5 @@
-# -*- coding: utf8 -*-
-#coding:utf-8
 import unittest
+import random
 class Node_2():
     # Инициализация э-та двунаправленного списка
     def __init__(self,v):
@@ -115,66 +114,79 @@ class Linked_List_2:
                 count+=1    
                 curr_node=curr_node.next
 
+def initial_data_for_test():
+    Values_for_Linked_lists=[]
+    Qty=10
+    for i in range(0,Qty):
+        Value_for_Linked_List=random.randint(0,100000)
+        Values_for_Linked_lists.append(Value_for_Linked_List)
+    return Values_for_Linked_lists
+
+def value_for_delete(initial_data_for_test):
+    number_for_delete=random.randint(0,len(initial_data_for_test))
+    value_for_delete=initial_data_for_test[number_for_delete]
+    return value_for_delete
+
+def value_for_add():
+    Value=random.randint(0,1000000)
+    return Value   
+
+def data_after_delete(initial_data_for_test,value_for_delete_2):
+    initial_data_for_test.remove(value_for_delete_2)
+    return initial_data_for_test
+
+def number(initial_data_for_test):
+    N=random.randint(0,len(initial_data_for_test)-1)
+    return N
+
+def data_after_insert(initial_data_for_test,N,Value):
+    initial_data_for_test.insert(N,Value)
+    return initial_data_for_test
+
 class Linked_List_2_Tests(unittest.TestCase):
 
     def test_delete(self):
-        # Тест роверяет работу метода удаления узла из связанного списка
+         #Тест проверяет работу метода удаления узла из связанного списка
         self.first_list=Linked_List_2()
-        self.second_list=Linked_List_2()       
-        Qty=int(input('Enter q-ty off items in LinkedList '))
-        for i in range(0,Qty):
-            Linked_List_2_item=Node_2(int(input('Enter Node, it must be int. format ')))
+        self.second_list=Linked_List_2() 
+        data_for_first_list=initial_data_for_test()
+        data_for_delete=value_for_delete(data_for_first_list)
+        for i in range(0, len(data_for_first_list)):
+            Linked_List_2_item=Node_2(data_for_first_list[i])
             self.first_list.add_in_tail(Linked_List_2_item)
-        print('****Initial List****')
-        self.first_list.print_all_nodes()
-        Deleted_item=int(input('Enter deleted Node '))
-        input('Now You should enter updated Linked List without deleted Node. Please press Enter ')
-        for i in range(0,Qty-1):
-            Linked_List_2_item=Node_2(int(input('Enter Node, it must be int. format ')))
+        self.first_list.delete_node(data_for_delete)
+        data_for_list_after_delete=data_after_delete(data_for_first_list,data_for_delete)
+        for i in range(0, len(data_for_list_after_delete)):
+            Linked_List_2_item=Node_2(data_for_first_list[i])
             self.second_list.add_in_tail(Linked_List_2_item)
-        print('****List with deleted (by program) Node, 1st list after deleted****')
-        self.first_list.delete_node(Deleted_item)
-        self.first_list.print_all_nodes()
-        print('****2d List ****')
-        self.second_list.print_all_nodes()
-        print('****Tests Delete Run****')
-        Min_lenght_list=min(self.first_list.lenght_list(),self.second_list.lenght_list())
         node_1=self.first_list.head
         node_2=self.second_list.head
-        for i in range(0,Min_lenght_list):
+        for i in range (0,len(data_for_list_after_delete)):
             self.assertEqual(node_1.value, node_2.value)
             node_1=node_1.next
-            node_2=node_2.next
-        print('****************')
-
+            node_2=node_2.next 
+  
     def test_insert(self):
-        # Проверяет работу метода вставки элемента в список
+        #Тест проверяет работу метода вставки узла
         self.first_list=Linked_List_2()
-        self.second_list=Linked_List_2()  
-        Qty=int(input('Enter q-ty off items in LinkedList '))
-        for i in range(0,Qty):
-            Linked_List_2_item=Node_2(int(input('Enter Node, it must be int. format ')))
-            self.first_list.add_in_tail(Linked_List_2_item)
-        print('****Initial data****')    
-        self.first_list.print_all_nodes()
-        insert_item=int(input('Enter inserted Node '))
-        node_number=int(input('Enter number of Node after that we will insert our new Node '))
-        self.first_list.insert_node(node_number,insert_item)
-        print('Now You should enter You updated list from Keybort')
-        for i in range(0,Qty+1):
-            Linked_List_2_item=Node_2(int(input('Enter Node, it must be int. format ')))
-            self.second_list.add_in_tail(Linked_List_2_item)
-        print('****List entered by You****')
-        self.second_list.print_all_nodes()
-        print('****List created by program****')
-        self.first_list.print_all_nodes()
-        print('****Test insert Run****')
+        self.second_list=Linked_List_2() 
+        data_for_first_list=initial_data_for_test() 
+        value_to_add=value_for_add()
+        number_for_insert=number(data_for_first_list)
+        for i in range(0, len(data_for_first_list)):
+            Linked_List_2_item=Node_2(data_for_first_list[i])
+            self.first_list.add_in_tail(Linked_List_2_item)     
+        self.first_list.insert_node(number_for_insert,value_to_add)
+        inserted_data=data_after_insert(data_for_first_list,number_for_insert,value_to_add)
+        for i in range(0, len(inserted_data)):
+            Linked_List_2_item=Node_2(inserted_data[i])
+            self.second_list.add_in_tail(Linked_List_2_item)    
         node_1=self.first_list.head
         node_2=self.second_list.head
-        for i in range(0,Qty+1):
+        for i in range (0,len(inserted_data)):
             self.assertEqual(node_1.value, node_2.value)
             node_1=node_1.next
-            node_2=node_2.next
+            node_2=node_2.next         
 
 if __name__ == '__main__':
     try:
