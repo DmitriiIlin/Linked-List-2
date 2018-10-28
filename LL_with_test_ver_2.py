@@ -175,7 +175,11 @@ class Linked_List_2_Tests(unittest.TestCase):
         number_for_insert=number(data_for_first_list)
         for i in range(0, len(data_for_first_list)):
             Linked_List_2_item=Node_2(data_for_first_list[i])
-            self.first_list.add_in_tail(Linked_List_2_item)     
+            self.first_list.add_in_tail(Linked_List_2_item)  
+        initial_node=self.first_list.head    
+        for i in range(0, len(data_for_first_list)):
+            self.assertNotEqual(initial_node.value,value_for_add)
+            initial_node=initial_node.next
         self.first_list.insert_node(number_for_insert,value_to_add)
         inserted_data=data_after_insert(data_for_first_list,number_for_insert,value_to_add)
         for i in range(0, len(inserted_data)):
